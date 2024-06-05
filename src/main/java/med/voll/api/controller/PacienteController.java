@@ -21,7 +21,7 @@ public class PacienteController {
 
     @PostMapping
     @Transactional
-  //  @Operation(summary = "Registra un nuevo paciente")
+    // @Operation(summary = "Registra un nuevo paciente")
     public ResponseEntity registrar(@RequestBody @Valid DatosRegistroPaciente datos, UriComponentsBuilder uriBuilder) {
         var paciente = new Paciente(datos);
         repository.save(paciente);
