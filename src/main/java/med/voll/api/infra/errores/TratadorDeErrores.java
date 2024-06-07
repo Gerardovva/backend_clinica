@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -42,7 +43,17 @@ public class TratadorDeErrores {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
+   /* @ExceptionHandler(HttpMessageNotReadableException)
+    public ResponseEntity defaulerror(Exception e){
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }*/
 
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<String> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        // Devuelve una respuesta con el mensaje de error personalizado
+        String errorMessage = "Hubo un error al analizar el JSON. Por favor, verifique el formato y los datos proporcionados.";
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+    }
     private record DatosErrorValidation(
             String campo,
             String error) {
@@ -50,6 +61,8 @@ public class TratadorDeErrores {
             this(error.getField(), error.getDefaultMessage());
         }
     }
+
+
 
 
 }//cierre clase
