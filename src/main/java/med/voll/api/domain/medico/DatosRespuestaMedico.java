@@ -6,6 +6,6 @@ public record DatosRespuestaMedico(Long id,
                                    String nombre,
                                    String email,
                                    String telefono,
-                                   String Docuemento,
+                                   String Especialidad,
                                    DatosDireccion direccion) {
 }

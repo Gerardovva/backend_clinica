@@ -1,5 +1,6 @@
 package med.voll.api.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import med.voll.api.domain.direccion.DatosDireccion;
@@ -24,7 +25,7 @@ public class MedicoController {
     @Autowired
     private MedicoRepository medicoRepository;
 
-    //método post
+    //método post para crear medico
     @PostMapping
     public ResponseEntity<DatosRespuestaMedico> registrarMedico(@RequestBody @Valid DatosRegistroMedico datosRegistroMedico,
                                                                 UriComponentsBuilder uriComponentsBuilder) {
@@ -39,15 +40,14 @@ public class MedicoController {
         // URL donde encontrar al medico
     }
 
-    //método get
+    //método get para listar medicos
     @GetMapping()
-    public ResponseEntity<Page<DatoListadoMedico>> listadoMedico(@PageableDefault(size = 5) Pageable paginacion) {
+    public ResponseEntity<Page<DatoListadoMedico>> listadoMedico(@PageableDefault Pageable paginacion) {  //Pageable(size = 5) para enviar
         // return medicoRepository.findAll(paginacion).map(DatoListadoMedico::new);
         return ResponseEntity.ok(medicoRepository.findByActivoTrue(paginacion).map(DatoListadoMedico::new));
-
     }
 
-    //método put
+    //método put para actualizar
     @PutMapping
     @Transactional
     public ResponseEntity actualizarMedico(@RequestBody @Valid DatosActualizarMedico datosActualizarMedico) {
@@ -68,15 +68,25 @@ public class MedicoController {
     }
 
     //retorna solo un dato en especifico
-    @GetMapping("/{id}")
+/*    @GetMapping("/{id}")
     public ResponseEntity<DatosRespuestaMedico> retornaDatosMedico(@PathVariable Long id) {
         Medico medico = medicoRepository.getReferenceById(id);
         var datosMedicos = new DatosRespuestaMedico(medico.getId(), medico.getNombre(), medico.getEmail(), medico.getTelefono()
                 , medico.getEspecialidad().toString(), new DatosDireccion(medico.getDireccion().getCalle(), medico.getDireccion().getDistrito(),
                 medico.getDireccion().getCiudad(), medico.getDireccion().getNumero(), medico.getDireccion().getComplemento()));
         return ResponseEntity.ok(datosMedicos);
+    }*/
+    @GetMapping("/{id}")
+    @Operation(summary = "Obtiene los registros del medico con ID")
+    public ResponseEntity<DatosRespuestaMedico> retornaDatosMedico(@PathVariable Long id) {
+        Medico medico = medicoRepository.getReferenceById(id);
+        var datosMedico = new DatosRespuestaMedico(medico.getId(), medico.getNombre(), medico.getEmail(),
+                medico.getTelefono(), medico.getEspecialidad().toString(),
+                new DatosDireccion(medico.getDireccion().getCalle(), medico.getDireccion().getDistrito(),
+                        medico.getDireccion().getCiudad(), medico.getDireccion().getNumero(),
+                        medico.getDireccion().getComplemento()));
+        return ResponseEntity.ok(datosMedico);
     }
-
 
 
 
