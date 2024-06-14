@@ -1,6 +1,7 @@
 package med.voll.api.controller;
 
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import med.voll.api.domain.paciente.*;
@@ -23,14 +24,14 @@ public class PacienteController {
 
     @PostMapping
     @Transactional
-    // @Operation(summary = "Registra un nuevo paciente")
+    @Operation(summary = "Registra un nuevo paciente")
     public ResponseEntity registrar(@RequestBody @Valid DatosRegistroPaciente datos, UriComponentsBuilder uriBuilder) {
         var paciente = new Paciente(datos);
         repository.save(paciente);
-
         var uri = uriBuilder.path("/pacientes/{id}").buildAndExpand(paciente.getId()).toUri();
         return ResponseEntity.created(uri).body(new DatosDetallesPaciente(paciente));
     }
+
 
     @GetMapping
    // @Operation(summary = "Obtiene el listado para los pacientes")
