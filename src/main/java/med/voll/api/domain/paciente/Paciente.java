@@ -40,18 +40,24 @@ public class Paciente {
         this.direccion = new Direccion(datos.direccion());
     }
 
-    public void actualizarInformacoes(DatosActualizacionPaciente datos) {
+    public void actualizarInformacion(DatosActualizacionPaciente datos) {
         if (datos.nombre() != null) {
             this.nombre = datos.nombre();
+        }
+        if (datos.email() != null) {
+            this.email = datos.email(); // Actualiza el campo de email
         }
         if (datos.telefono() != null) {
             this.telefono = datos.telefono();
         }
+        if (datos.documento() != null) {
+            this.documento = datos.documento(); // Actualiza el campo de documento
+        }
         if (datos.direccion() != null) {
             this.direccion.actualizarDato(datos.direccion());
         }
-
     }
+
 
     public void eliminar() {
         this.activo = false;

@@ -45,7 +45,7 @@ public class PacienteController {
    // @Operation(summary = "Actualiza las informaciones para el paciente")
     public ResponseEntity actualizar(@RequestBody @Valid DatosActualizacionPaciente datos) {
         var paciente = repository.getReferenceById(datos.id());
-        paciente.actualizarInformacoes(datos);
+        paciente.actualizarInformacion(datos);
 
         return ResponseEntity.ok(new DatosDetallesPaciente(paciente));
     }
@@ -56,7 +56,6 @@ public class PacienteController {
     public ResponseEntity eliminar(@PathVariable Long id) {
         var paciente = repository.getReferenceById(id);
         paciente.eliminar();
-
         return ResponseEntity.noContent().build();
     }
 
