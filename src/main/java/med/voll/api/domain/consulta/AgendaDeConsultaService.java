@@ -88,10 +88,6 @@ public class AgendaDeConsultaService {
     }
 
 
-   /* public Page<DetalleConsulta> consultarCita(Pageable pageable) {
-        return consultaRepository.consultarCita(pageable).map(DetalleConsulta::new);
-    }*/
-
     public Page<DetalleConsulta> consultarCita(Pageable pageable) {
         Page<Object[]> resultados = consultaRepository.consultarCita(pageable);
         return resultados.map(obj -> new DetalleConsulta(
